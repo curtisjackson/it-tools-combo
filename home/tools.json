@@ -1,0 +1,29 @@
+[
+  {
+    "id": "it-tools",
+    "name": "IT-Tools",
+    "path": "/it-tools/",
+    "description": "Сотни мелких утилит разработчика: UUID, хэши, JWT, base64, cron, regex, сеть, конвертеры форматов.",
+    "tags": ["uuid", "hash", "jwt", "base64", "cron", "regex", "json", "yaml", "url", "ip", "subnet", "qr", "password", "token"],
+    "source": "https://github.com/sharevb/it-tools",
+    "color": "#18a058"
+  },
+  {
+    "id": "cyberchef",
+    "name": "CyberChef",
+    "path": "/cyberchef/",
+    "description": "Кодирование, шифрование, сжатие и разбор данных. Операции собираются в цепочки — «рецепты».",
+    "tags": ["decode", "encode", "crypto", "aes", "xor", "hex", "gzip", "recipe", "forensics", "parse"],
+    "source": "https://github.com/gchq/CyberChef",
+    "color": "#e8a33b"
+  },
+  {
+    "id": "omni-tools",
+    "name": "Omni-Tools",
+    "path": "/omni/",
+    "description": "Работа с файлами прямо в браузере: картинки, видео, аудио, PDF, текст, JSON/CSV/XML.",
+    "tags": ["image", "resize", "compress", "video", "audio", "pdf", "merge", "csv", "xml", "list", "text"],
+    "source": "https://github.com/iib0011/omni-tools",
+    "color": "#3b82f6"
+  }
+]

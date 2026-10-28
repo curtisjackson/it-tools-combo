@@ -1,0 +1,35 @@
+# Стек для cj_serv (/home/cj/dockers/it-tools-combo, виден в Dockge).
+# Образ собирает GitHub Actions; Watchtower подтягивает новый :latest и перезапускает контейнер.
+services:
+  it-tools-combo:
+    image: ghcr.io/curtisjackson/it-tools-combo:latest
+    container_name: it-tools-combo
+    restart: unless-stopped
+    # Только LAN-адрес: снаружи доступ идёт через Nginx Proxy Manager (tools.bit2byte.pro).
+    ports:
+      - "192.168.1.11:9449:8080"
+    read_only: true
+    tmpfs:
+      - /tmp
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+      - com.centurylinklabs.watchtower.scope=it-tools-combo
+
+  watchtower:
+    # Форк containrrr/watchtower: оригинал архивирован и не работает с Docker 29.
+    image: nickfedor/watchtower:latest
+    container_name: it-tools-combo-watchtower
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      # Следим только за контейнерами с меткой выше, остальные стеки не трогаем.
+      WATCHTOWER_LABEL_ENABLE: "true"
+      WATCHTOWER_SCOPE: it-tools-combo
+      WATCHTOWER_CLEANUP: "true"
+      WATCHTOWER_SCHEDULE: "0 0 4 * * *"
+      TZ: Europe/Moscow
+    labels:
+      # Обновляет и сам себя.
+      - com.centurylinklabs.watchtower.enable=true
+      - com.centurylinklabs.watchtower.scope=it-tools-combo

@@ -1,0 +1,37 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:recommended", ":disableDependencyDashboard"],
+  "timezone": "Europe/Moscow",
+  "schedule": ["before 6am"],
+  "customManagers": [
+    {
+      "customType": "regex",
+      "description": "Версии утилит в ARG Dockerfile",
+      "managerFilePatterns": ["/^Dockerfile$/"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\nARG \\w+=(?<currentValue>\\S+)"
+      ]
+    }
+  ],
+  "packageRules": [
+    {
+      "description": "Обновления утилит и базовых образов: minor/patch сливаются сами после зелёного CI, major — вручную",
+      "matchUpdateTypes": ["minor", "patch", "digest", "pin"],
+      "automerge": true,
+      "automergeType": "pr",
+      "platformAutomerge": false
+    },
+    {
+      "description": "it-tools версионируется датой (2026.9.27): смена года — не повод ждать ручного merge",
+      "matchPackageNames": ["ghcr.io/sharevb/it-tools"],
+      "versioning": "loose",
+      "automerge": true
+    },
+    {
+      "description": "Omni-Tools — патч может не лечь, но CI это поймает до merge",
+      "matchPackageNames": ["iib0011/omni-tools"],
+      "matchUpdateTypes": ["major"],
+      "automerge": false
+    }
+  ]
+}
