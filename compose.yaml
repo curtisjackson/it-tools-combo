@@ -1,8 +1,9 @@
 # Стек для cj_serv (/home/cj/dockers/it-tools-combo, виден в Dockge).
-# Образ собирает GitHub Actions; Watchtower подтягивает новый :latest и перезапускает контейнер.
+# Образ — форк IT-Tools с утилитами из Omni-Tools и CyberChef, его собирает GitHub Actions форка:
+# https://github.com/curtisjackson/it-tools. Watchtower подтягивает новый :latest и перезапускает контейнер.
 services:
   it-tools-combo:
-    image: ghcr.io/curtisjackson/it-tools-combo:latest
+    image: ghcr.io/curtisjackson/it-tools:latest
     container_name: it-tools-combo
     restart: unless-stopped
     # Только LAN-адрес: снаружи доступ идёт через Nginx Proxy Manager (tools.bit2byte.pro).
@@ -11,6 +12,13 @@ services:
     read_only: true
     tmpfs:
       - /tmp
+    # IT-Tools отдаётся из корня. Для подпути нужны BASE_URL и записываемый /etc/nginx/conf.d:
+    #   environment: { BASE_URL: /it-tools/ }
+    #   tmpfs: [/tmp, "/etc/nginx/conf.d:uid=101,gid=101"]
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/"]
+      interval: 30s
+      timeout: 3s
     labels:
       - com.centurylinklabs.watchtower.enable=true
       - com.centurylinklabs.watchtower.scope=it-tools-combo
